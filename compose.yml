@@ -1,5 +1,5 @@
 services: 
-    dind: 
+    docker: 
       image: docker:dind
       privileged: true 
       volumes:
@@ -14,7 +14,7 @@ services:
       restart: on-failure
       environment:
         - DOCKER_TLS_VERIFY=1
-        - DOCKER_HOST=tcp://dind:2376
+        - DOCKER_HOST=tcp://docker:2376
         - DOCKER_CERT_PATH=/certs/client
       ports: 
         - '50000:50000'
