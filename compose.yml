@@ -1,0 +1,34 @@
+services: 
+    docker: 
+      image: docker:dind
+      privileged: true 
+      volumes:
+        - ./jenkins-home:/var/jenkins_home
+        - ./jenkins-certs:/certs/client
+      environment: 
+        - DOCKER_TLS_CERTDIR=/certs
+      networks:
+        - jenkins 
+    jenkins:
+     image: viki123v/cicd-homework4
+     build: 
+      context: . 
+      dockerfile: Dockerfile-jenkins
+     restart: on-failure
+     environment:
+        - DOCKER_TLS_VERIFY=1
+        - DOCKER_HOST=tcp://docker:2376
+        - DOCKER_CERT_PATH=/certs/client
+     ports: 
+        - '50000:50000'
+        - '8080:8080'
+     volumes: 
+        - ./jenkins-home:/var/jenkins_home
+        - ./jenkins-certs:/certs/client
+     networks:
+        - jenkins 
+networks: 
+  jenkins: 
+    driver: bridge
+
+
